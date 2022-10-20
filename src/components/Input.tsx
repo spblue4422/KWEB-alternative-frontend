@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 
 interface TextInputProps extends PropsWithChildren {
 	id: string;
-	hold: string;
+	hold?: string;
 	type: string;
 	class?: string;
 }
@@ -11,7 +11,7 @@ interface RadioInputProps extends PropsWithChildren {
 	id: string;
 	value: string;
 	radioClass?: string;
-	textClass?: string
+	textClass?: string;
 	check: boolean | undefined;
 	changeFunc: VoidFunction;
 }
@@ -40,7 +40,9 @@ export const RadioInput: React.FC<RadioInputProps> = (
 				onChange={props.changeFunc}
 				className={`${props.radioClass} appearance-none align-middle cursor-pointer border rounded-full checked:border-4`}
 			></input>
-			<span className={`${props.textClass} align-middle ml-1`}>{props.children}</span>
+			<span className={`${props.textClass} align-middle ml-1`}>
+				{props.children}
+			</span>
 		</label>
 	);
 };

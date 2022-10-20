@@ -2,7 +2,7 @@ import { MouseEventHandler, PropsWithChildren } from 'react';
 
 interface ButtonProps extends PropsWithChildren {
 	id: string;
-	class: string;
+	class?: string;
 	onClick?: MouseEventHandler;
 }
 
