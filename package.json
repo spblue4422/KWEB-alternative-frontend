@@ -9,10 +9,14 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@types/react-cookies": "^0.1.0",
 		"autoprefixer": "^10.4.12",
 		"next": "12.3.1",
+		"next-cookies": "^2.0.3",
 		"postcss": "^8.4.18",
 		"react": "18.2.0",
+		"react-cookie": "^4.1.1",
+		"react-cookies": "^0.1.1",
 		"react-dom": "18.2.0",
 		"react-icons": "^4.6.0",
 		"react-router": "^6.4.2",

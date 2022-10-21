@@ -9,6 +9,7 @@ interface ItemProps {
 interface CourseItemProps {
 	courseId: number;
 	course: string;
+	professorId: string;
 	professor: string;
 }
 
@@ -19,8 +20,11 @@ interface LectureItemProps {
 }
 
 export const ApplicationListItem: React.FC<
-	Omit<CourseItemProps, 'professor'> & LectureItemProps
-> = (props: Omit<CourseItemProps, 'professor'> & LectureItemProps) => {
+	Omit<CourseItemProps, 'professor' | 'professorId'> & LectureItemProps
+> = (
+	props: Omit<CourseItemProps, 'professor' | 'professorId'> &
+		LectureItemProps,
+) => {
 	return (
 		<li className="w-full py-1 border border-b-black hover:bg-gray-100">
 			<a
@@ -51,7 +55,9 @@ export const CourseListItem: React.FC<CourseItemProps> = (
 			}}
 		>
 			<h1>{props.course}</h1>
-			<p>{props.professor}</p>
+			<a href={`/courses/list?uid=${props.professorId}`}>
+				{props.professor}
+			</a>
 		</li>
 	);
 };

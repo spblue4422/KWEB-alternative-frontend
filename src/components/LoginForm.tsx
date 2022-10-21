@@ -40,7 +40,7 @@ export const LoginForm: React.FC = () => {
 			window.alert('잘못된 아이디/비밀번호/상태 정보입니다.');
 		} else {
 			//로그인 후 메인페이지로 이동
-			window.location.href = 'http://localhost:3210/login';
+			// window.location.href = 'http://localhost:3210/login';
 		}
 	};
 
