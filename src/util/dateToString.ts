@@ -1,4 +1,4 @@
-export const DateToString = (date: Date) => {
+export const DateToString = (date: string) => {
 	const monthRcd: Record<string, string> = {
 		Jan: '01',
 		Feb: '02',
@@ -14,9 +14,10 @@ export const DateToString = (date: Date) => {
 		Dec: '12',
 	};
 
-	const dStr = date.toDateString().split(' ');
+	//const str = new Date(date);
+	const nDate = new Date(date);
+	const dStr = nDate.toDateString().split(' ');
 	const dRet = dStr[3] + '-' + monthRcd[dStr[1]] + '-' + dStr[2] + ' ';
-	const tRet = date.toTimeString().split(' ')[0];
-
+	const tRet = nDate.toTimeString().split(' ')[0];
 	return dRet + tRet;
 };

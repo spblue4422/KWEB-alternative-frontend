@@ -5,7 +5,7 @@ interface ItemProps {
 	course: string;
 	lectureId: number;
 	lecture: string;
-	date: Date;
+	date: string;
 }
 
 interface CourseItemProps {
@@ -18,7 +18,7 @@ interface CourseItemProps {
 interface LectureItemProps {
 	lectureId: number;
 	lecture: string;
-	date: Date;
+	date: string;
 }
 
 export const ApplicationListItem: React.FC<
