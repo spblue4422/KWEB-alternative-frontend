@@ -1,31 +1,29 @@
 import type { InferGetServerSidePropsType, NextPage } from 'next';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { ApplicationListItem, LectureListItem } from '../components/ListItem';
-import { ResultType } from '../interface/interface';
 import { Layout } from '../layouts/Layout';
-import { getCookie } from '../util/getCookie';
 
 const Home: NextPage = () => {
 	//메인 페이지 - 본인이 신청한 강의가 보임.
-	let res: ResultType = { code: '', msg: '', data: [] };
+	const [data, setData] = useState(new Array<any>());
 
 	const checkLogin = () => {};
-	const getData = async (): Promise<void> => {
-		// const cookie = getCookie();
-		res = await (
-			await fetch('http://localhost:3000/courses/lectures/list/my')
-		).json();
-	};
 
 	useEffect(() => {
-		getData();
-	});
+		axios({
+			method: 'GET',
+			url: 'http://localhost:3000/courses/lectures/list/my',
+			withCredentials: true,
+		})
+			.then((res) => setData(res.data.data));
+	}, []);
 
 	return (
 		<Layout>
 			<p className="font-extrabold text-3xl">업데이트된 강의 목록</p>
-			<dl className="w-full overflow-scroll flex-1">
-				{res.data.map((dt, idx) => (
+			<ul className="w-full overflow-scroll flex-1">
+				{data.map((dt, idx) => (
 					<ApplicationListItem
 						key={`ALI_${idx}`}
 						courseId={dt.course.id}
@@ -35,7 +33,7 @@ const Home: NextPage = () => {
 						date={dt.createdDate}
 					></ApplicationListItem>
 				))}
-			</dl>
+			</ul>
 		</Layout>
 	);
 };

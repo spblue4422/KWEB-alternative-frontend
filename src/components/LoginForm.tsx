@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { TextInput } from './Input';
 import { SubmitButton, ClickButton } from './Button';
@@ -7,7 +8,7 @@ import { FormLayout } from '../layouts/FormLayout';
 export const LoginForm: React.FC = () => {
 	const joinModalOpen = async () => {
 		const joinForm = document.getElementById('join_form') as HTMLDivElement;
-		const joinBack = document.querySelector('#join_back') as HTMLDivElement;
+		const joinBack = document.getElementById('join_back') as HTMLDivElement;
 
 		joinBack.classList.replace('opacity-0', 'opacity-60');
 		joinBack.classList.add('blur-sm');
@@ -26,15 +27,18 @@ export const LoginForm: React.FC = () => {
 			password: inputPw.value,
 		};
 
-		const res = await (
-			await fetch('http://localhost:3000/auth/login', {
-				method: 'POST',
-				body: JSON.stringify(reqBody),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
-		).json();
+		const res: any = await axios({
+			method: 'POST',
+			url: 'http://localhost:3000/auth/login',
+			data: {
+				userId: inputId.value,
+				password: inputPw.value,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			withCredentials: true,
+		});
 
 		if (res.statusCode == 401) {
 			window.alert('잘못된 아이디/비밀번호/상태 정보입니다.');

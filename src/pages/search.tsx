@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { SubmitButton } from '../components/Button';
 import { TextInput } from '../components/Input';
 import { CourseListItem } from '../components/ListItem';
@@ -8,21 +9,42 @@ import { Layout } from '../layouts/Layout';
 
 const Search: NextPage = () => {
 	let res: ResultType = { code: '', msg: '', data: [] };
+	const [data, setData] = useState(new Array<any>());
 
 	const getAllCourses = async () => {
 		res = await (
-			await fetch('http://localhost:3000/courses/list/search')
+			await fetch('http://localhost:3000/courses/list/search', {
+				credentials: 'include',
+			})
 		).json();
 	};
 
-	const searchAllCoursesByInput = async () => {
-		res = await (
-			await fetch('http://localhost:3000/courses/list/search')
-		).json();
+	const searchAllCoursesByInput = async (
+		e: React.FormEvent<HTMLFormElement>,
+	) => {
+		e.preventDefault();
+		const inputSrch = document.getElementById(
+			'input_srch',
+		) as HTMLInputElement;
+		axios({
+			method: 'POST',
+			url: 'http://localhost:3000/courses/list/search',
+			data: {
+				searchText: inputSrch.value,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			withCredentials: true,
+		}).then((res) => setData(res.data.data));
 	};
 
 	useEffect(() => {
-		getAllCourses();
+		axios({
+			method: 'GET',
+			url: 'http://localhost:3000/courses/all',
+			withCredentials: true,
+		}).then((res) => setData(res.data.data));
 	}, []);
 
 	return (
@@ -35,7 +57,7 @@ const Search: NextPage = () => {
 					id={'input_srch'}
 					type={'text'}
 					hold={'검색'}
-					class={'w-[600px]'}
+					class={'w-[80%]'}
 				></TextInput>
 				<SubmitButton
 					id={'srch_sub_btn'}
@@ -46,17 +68,17 @@ const Search: NextPage = () => {
 					검색
 				</SubmitButton>
 			</form>
-			<dl className="w-full overflow-scroll flex-1">
-				{res.data.map((dt, idx) => (
+			<ul className="w-full overflow-scroll flex-1">
+				{data.map((dt, idx) => (
 					<CourseListItem
 						key={`CLI_${idx}`}
-						courseId={dt.course.id}
-						course={dt.course.name}
-						professorId={dt.course.user.userId}
-						professor={dt.course.user.name}
+						courseId={dt.id}
+						course={dt.name}
+						professorId={dt.user.userId}
+						professor={dt.user.name}
 					></CourseListItem>
 				))}
-			</dl>
+			</ul>
 		</Layout>
 	);
 };

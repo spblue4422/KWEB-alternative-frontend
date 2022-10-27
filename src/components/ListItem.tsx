@@ -1,3 +1,5 @@
+import { DateToString } from '../util/dateToString';
+
 interface ItemProps {
 	courseId: number;
 	course: string;
@@ -39,7 +41,7 @@ export const ApplicationListItem: React.FC<
 			>
 				{props.lecture}
 			</a>
-			<p>{props.date.toString()}</p>
+			<p>{DateToString(props.date)}</p>
 		</li>
 	);
 };
@@ -49,7 +51,7 @@ export const CourseListItem: React.FC<CourseItemProps> = (
 ) => {
 	return (
 		<li
-			className="w-full py-1 flex justify-between border border-b-black hover:bg-gray-100"
+			className="w-full py-1 flex justify-between border border-b-black hover:bg-gray-100 cursor-pointer"
 			onClick={function (e) {
 				window.location.href = `/courses/${props.courseId}`;
 			}}
@@ -66,6 +68,14 @@ export const LectureListItem: React.FC<LectureItemProps> = (
 	props: LectureItemProps,
 ) => {
 	return (
-		<li className="w-full py-1 border border-b-black hover:bg-gray-100"></li>
+		<li
+			className="w-full py-1 flex justify-between border border-b-black hover:bg-gray-100 cursor-pointer"
+			onClick={function (e) {
+				window.location.href = `/courses/lectures/${props.lectureId}`;
+			}}
+		>
+			<h1>{props.lecture}</h1>
+			<p>{DateToString(props.date)}</p>
+		</li>
 	);
 };
