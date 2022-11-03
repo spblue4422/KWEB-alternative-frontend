@@ -1,23 +1,13 @@
 import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { SubmitButton } from '../components/Button';
+import { SubmitButton, ClickButton } from '../components/Button';
 import { TextInput } from '../components/Input';
 import { CourseListItem } from '../components/ListItem';
-import { ResultType } from '../interface/interface';
 import { Layout } from '../layouts/Layout';
 
 const Search: NextPage = () => {
-	let res: ResultType = { code: '', msg: '', data: [] };
 	const [data, setData] = useState(new Array<any>());
-
-	const getAllCourses = async () => {
-		res = await (
-			await fetch('http://localhost:3000/courses/list/search', {
-				credentials: 'include',
-			})
-		).json();
-	};
 
 	const searchAllCoursesByInput = async (
 		e: React.FormEvent<HTMLFormElement>,
@@ -36,7 +26,16 @@ const Search: NextPage = () => {
 				'Content-Type': 'application/json',
 			},
 			withCredentials: true,
-		}).then((res) => setData(res.data.data));
+		})
+			.then((res) => setData(res.data.data))
+			.catch((error) => {
+				if (error.response.status == 401) {
+					alert('로그인이 필요한 화면입니다.');
+					window.location.href = 'http://localhost:3210/login';
+				} else {
+					alert('알 수 없는 오류입니다. 다시 시도해주세요.');
+				}
+			});
 	};
 
 	useEffect(() => {
@@ -44,14 +43,23 @@ const Search: NextPage = () => {
 			method: 'GET',
 			url: 'http://localhost:3000/courses/all',
 			withCredentials: true,
-		}).then((res) => setData(res.data.data));
+		})
+			.then((res) => setData(res.data.data))
+			.catch((error) => {
+				if (error.response.status == 401) {
+					alert('로그인이 필요한 화면입니다.');
+					window.location.href = 'http://localhost:3210/login';
+				} else {
+					alert('알 수 없는 오류입니다. 다시 시도해주세요.');
+				}
+			});
 	}, []);
 
 	return (
 		<Layout>
 			<form
 				onSubmit={searchAllCoursesByInput}
-				className="w-full flex justify-between"
+				className="w-full flex justify-between z-10"
 			>
 				<TextInput
 					id={'input_srch'}
@@ -67,8 +75,17 @@ const Search: NextPage = () => {
 				>
 					검색
 				</SubmitButton>
+				{/* <ClickButton
+					id={'addcrs_clk_btn'}
+					class={
+						'w-10 bg-white text-crimson drop-shadow-md border border-crimson'
+					}
+					onClick={courseModalOpen}
+				>
+					코스
+				</ClickButton> */}
 			</form>
-			<ul className="w-full overflow-scroll flex-1">
+			<ul className="w-full overflow-scroll flex-1 z-10">
 				{data.map((dt, idx) => (
 					<CourseListItem
 						key={`CLI_${idx}`}

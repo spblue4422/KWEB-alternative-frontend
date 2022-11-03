@@ -1,11 +1,13 @@
-import type { InferGetServerSidePropsType, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ApplicationListItem, LectureListItem } from '../components/ListItem';
 import { Layout } from '../layouts/Layout';
+import { useCookies } from 'react-cookie';
 
 const Home: NextPage = () => {
 	//메인 페이지 - 본인이 신청한 강의가 보임.
+	const [cookies, setCookie, removeCookie] = useCookies(['Authorization']);
 	const [data, setData] = useState(new Array<any>());
 
 	const checkLogin = () => {};
@@ -16,7 +18,15 @@ const Home: NextPage = () => {
 			url: 'http://localhost:3000/courses/lectures/list/my',
 			withCredentials: true,
 		})
-			.then((res) => setData(res.data.data));
+			.then((res) => setData(res.data.data))
+			.catch((error) => {
+				if (error.response.status == 401) {
+					alert('로그인이 필요한 화면입니다.');
+					window.location.href = 'http://localhost:3210/login';
+				} else {
+					alert('알 수 없는 오류입니다. 다시 시도해주세요.');
+				}
+			});
 	}, []);
 
 	return (

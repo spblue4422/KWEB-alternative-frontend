@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { VscChromeClose } from 'react-icons/vsc';
+import axios from 'axios';
 import { FormLayout } from '../layouts/FormLayout';
 import { SubmitButton } from './Button';
 import { RadioInput, TextInput } from './Input';
@@ -31,11 +32,12 @@ const JoinForm: React.FC = () => {
 			'input_new_un',
 		) as HTMLInputElement;
 
-		joinBack.classList.replace('opacity-60', 'opacity-0');
-		joinBack.classList.remove('blur-sm');
-		joinBack.classList.replace('z-20', 'z-0');
 		joinForm.classList.replace('opacity-100', 'opacity-0');
 		joinForm.classList.replace('z-30', 'z-0');
+		joinBack.classList.replace('opacity-60', 'opacity-0');
+		joinBack.classList.replace('z-20', 'z-0');
+		joinBack.classList.remove('blur-sm');
+
 		inputId.value = '';
 		inputPw.value = '';
 		inputName.value = '';
@@ -58,31 +60,32 @@ const JoinForm: React.FC = () => {
 			'input_new_un',
 		) as HTMLInputElement;
 
-		const reqBody = {
-			userId: inputId.value,
-			password: inputPw.value,
-			name: inputName.value,
-			uniqueNum: inputUnqNum.value,
-			status: status,
-		};
-
-		const res = await (
-			await fetch('http://localhost:3000/users/add', {
-				method: 'POST',
-				body: JSON.stringify(reqBody),
-				headers: {
-					'Content-Type': 'application/json',
-				},
+		await axios({
+			method: 'POST',
+			url: 'http://localhost:3000/users/add',
+			data: {
+				userId: inputId.value,
+				password: inputPw.value,
+				name: inputName.value,
+				uniqueNum: inputUnqNum.value,
+				status: status,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			withCredentials: true,
+		})
+			.then((res) => {
+				if (res.data.code == 'SUCCESS') {
+					alert('회원가입 성공');
+					joinModalClose();
+				} else {
+					alert(res.data.msg);
+				}
 			})
-		).json();
-
-		if (res.code == 'SUCCESS') {
-			//alert가 안나오고 모달이 꺼짐.
-			window.alert('회원가입 성공');
-			joinModalClose();
-		} else {
-			window.alert(res.msg);
-		}
+			.catch((error) => {
+				alert('알 수 없는 오류입니다. 다시 시도해주세요.');
+			});
 	};
 	return (
 		<>

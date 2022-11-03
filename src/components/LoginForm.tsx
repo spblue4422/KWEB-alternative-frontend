@@ -10,11 +10,11 @@ export const LoginForm: React.FC = () => {
 		const joinForm = document.getElementById('join_form') as HTMLDivElement;
 		const joinBack = document.getElementById('join_back') as HTMLDivElement;
 
-		joinBack.classList.replace('opacity-0', 'opacity-60');
-		joinBack.classList.add('blur-sm');
-		joinBack.classList.replace('z-0', 'z-20');
 		joinForm.classList.replace('opacity-0', 'opacity-100');
 		joinForm.classList.replace('z-0', 'z-30');
+		joinBack.classList.replace('opacity-0', 'opacity-60');
+		joinBack.classList.replace('z-0', 'z-20');
+		joinBack.classList.add('blur-sm');
 	};
 
 	const login = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,12 +22,7 @@ export const LoginForm: React.FC = () => {
 		const inputId = document.getElementById('input_id') as HTMLInputElement;
 		const inputPw = document.getElementById('input_pw') as HTMLInputElement;
 
-		const reqBody = {
-			userId: inputId.value,
-			password: inputPw.value,
-		};
-
-		const res: any = await axios({
+		await axios({
 			method: 'POST',
 			url: 'http://localhost:3000/auth/login',
 			data: {
@@ -38,14 +33,18 @@ export const LoginForm: React.FC = () => {
 				'Content-Type': 'application/json',
 			},
 			withCredentials: true,
-		});
-
-		if (res.statusCode == 401) {
-			window.alert('잘못된 아이디/비밀번호/상태 정보입니다.');
-		} else {
-			//로그인 후 메인페이지로 이동
-			// window.location.href = 'http://localhost:3210/login';
-		}
+		})
+			.then((res) => {
+				alert('로그인 성공');
+				window.location.href = 'http://localhost:3210/';
+			})
+			.catch((error) => {
+				if (error.response.status == 401) {
+					alert('잘못된 아이디/비밀번호/상태 정보입니다.');
+				} else {
+					alert('알 수 없는 오류입니다. 다시 시도해주세요.');
+				}
+			});
 	};
 
 	return (
