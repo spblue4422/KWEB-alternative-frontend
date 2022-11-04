@@ -1,12 +1,5 @@
+import axios from 'axios';
 import { DateToString } from '../util/dateToString';
-
-interface ItemProps {
-	courseId: number;
-	course: string;
-	lectureId: number;
-	lecture: string;
-	date: string;
-}
 
 interface CourseItemProps {
 	courseId: number;
@@ -19,6 +12,13 @@ interface LectureItemProps {
 	lectureId: number;
 	lecture: string;
 	date: string;
+}
+
+interface MemberItemProps {
+	id: number;
+	userId: string;
+	name: string;
+	uniqueNum: string;
 }
 
 export const ApplicationListItem: React.FC<
@@ -76,6 +76,25 @@ export const LectureListItem: React.FC<LectureItemProps> = (
 		>
 			<h1>{props.lecture}</h1>
 			<p>{DateToString(props.date)}</p>
+		</li>
+	);
+};
+
+export const MemberListItem: React.FC<MemberItemProps> = (
+	props: MemberItemProps,
+) => {
+	const memberBan = async () => {
+		axios({
+			method: 'DELETE',
+			url:'http://localhost:3000/applications/drop/'
+		});
+	};
+
+	return (
+		<li className="w-full flex border border-b-black">
+			<div className="border border-b-black">{props.userId}</div>
+			<div className="border border-b-black">{props.uniqueNum}</div>
+			<div className="border border-b-black">{props.name}</div>
 		</li>
 	);
 };

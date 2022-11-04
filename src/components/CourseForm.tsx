@@ -4,6 +4,7 @@ import { VscChromeClose } from 'react-icons/vsc';
 import { FormLayout } from '../layouts/FormLayout';
 import { TextInput } from './Input';
 
+//나중에 add용인지 edit용인지도 확장 가능하게끔
 export const CourseForm: React.FC = () => {
 	const courseModalClose = async () => {
 		const courseForm = document.getElementById(
@@ -80,7 +81,9 @@ export const CourseForm: React.FC = () => {
 			<FormLayout
 				id={'course_form'}
 				submitFunc={addCourse}
-				class={'w-[960px] h-[600px] min-w-[480px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0'}
+				class={
+					'w-[960px] h-[600px] min-w-[480px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0'
+				}
 			>
 				<VscChromeClose
 					id="icon_x"

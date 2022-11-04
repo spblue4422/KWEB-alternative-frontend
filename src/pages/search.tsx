@@ -75,15 +75,6 @@ const Search: NextPage = () => {
 				>
 					검색
 				</SubmitButton>
-				{/* <ClickButton
-					id={'addcrs_clk_btn'}
-					class={
-						'w-10 bg-white text-crimson drop-shadow-md border border-crimson'
-					}
-					onClick={courseModalOpen}
-				>
-					코스
-				</ClickButton> */}
 			</form>
 			<ul className="w-full overflow-scroll flex-1 z-10">
 				{data.map((dt, idx) => (

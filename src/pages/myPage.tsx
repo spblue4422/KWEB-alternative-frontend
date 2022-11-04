@@ -7,17 +7,8 @@ import { DateToString } from '../util/dateToString';
 import { ClickButton } from '../components/Button';
 import { CourseForm } from '../components/CourseForm';
 
-interface user {
-	id: number;
-	name: string;
-	userId: string;
-	uniqueNum: string;
-	status: string;
-	createdDate: string;
-}
-
 const MyPage: NextPage = () => {
-	const [udata, setUdata] = useState<user>({
+	const [udata, setUdata] = useState({
 		id: 0,
 		name: '',
 		userId: '',
@@ -39,7 +30,7 @@ const MyPage: NextPage = () => {
 		courseForm.classList.replace('z-0', 'z-30');
 		courseBack.classList.replace('opacity-0', 'opacity-60');
 		courseBack.classList.replace('z-0', 'z-20');
-		// courseBack.classList.add('blur-sm');
+		courseBack.classList.add('blur-sm');
 	};
 
 	useEffect(() => {

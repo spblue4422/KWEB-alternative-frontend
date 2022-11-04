@@ -10,8 +10,6 @@ const Home: NextPage = () => {
 	const [cookies, setCookie, removeCookie] = useCookies(['Authorization']);
 	const [data, setData] = useState(new Array<any>());
 
-	const checkLogin = () => {};
-
 	useEffect(() => {
 		axios({
 			method: 'GET',

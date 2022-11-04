@@ -7,23 +7,11 @@ import { Layout } from '../../layouts/Layout';
 import { LectureForm } from '../../components/LectureForm';
 import { ClickButton } from '../../components/Button';
 
-interface crs {
-	id: number;
-	name: string;
-	description: string;
-	user: {
-		id: number;
-		userId: string;
-		name: string;
-	};
-	createdDate: string;
-}
-
 const Course: NextPage = () => {
 	const router = useRouter();
 	const { course } = router.query;
 	const [obj, setObj] = useState({ self: 0, apc: 0 });
-	const [cdata, setCdata] = useState<crs>({
+	const [cdata, setCdata] = useState({
 		id: 0,
 		name: '',
 		description: '',
@@ -106,23 +94,24 @@ const Course: NextPage = () => {
 				courseName={cdata.name}
 			></LectureForm>
 			<Layout>
-				<div className="z-10">{cdata.name}</div>
-				<p>{cdata.description}</p>
-				<p>{cdata.user.name}</p>
-				<div className="flex justify-between">
-					<p>강의 목록</p>
+				<div className="flex justify-between z-10">
+					<p>{cdata.name}</p>
 					{obj.self ? (
 						<ClickButton
 							id={'addlec_clk_btn'}
-							class={
-								'w-20 bg-white text-crimson drop-shadow-md border border-crimson'
-							}
+							class={'w-16 border text-crimson border-crimson'}
+							onClick={lectureModalOpen}
 						>
-							강의 추가
+							폐강
 						</ClickButton>
 					) : (
 						''
 					)}
+				</div>
+				<p>{cdata.description}</p>
+				<p>{cdata.user.name}</p>
+				<div className="flex justify-between z-10 mt-10">
+					<p>강의 게시물 목록</p>
 				</div>
 				<ul className="z-10">
 					{ldata.map((dt, idx) => (
@@ -134,6 +123,19 @@ const Course: NextPage = () => {
 						></LectureListItem>
 					))}
 				</ul>
+				<div className="w-full inline-block float-right z-10">
+					{obj.self ? (
+						<ClickButton
+							id={'addlec_clk_btn'}
+							class={'w-32 bg-crimson text-white'}
+							onClick={lectureModalOpen}
+						>
+							게시물 추가
+						</ClickButton>
+					) : (
+						''
+					)}
+				</div>
 			</Layout>
 		</>
 	);
