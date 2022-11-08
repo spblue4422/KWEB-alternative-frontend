@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Link from 'next/link';
 import { DateToString } from '../util/dateToString';
 
 interface CourseItemProps {
@@ -28,20 +29,18 @@ export const ApplicationListItem: React.FC<
 		LectureItemProps,
 ) => {
 	return (
-		<li className="w-full py-1 border border-b-black hover:bg-gray-100">
-			<a
-				href={`/courses/${props.courseId}`}
-				className="font-extrabold text-xl pt-2"
-			>
-				{props.course}
-			</a>
-			<a
-				href={`/courses/${props.courseId}/${props.lectureId}`}
-				className="text-base pt-2"
-			>
-				{props.lecture}
-			</a>
-			<p>{DateToString(props.date)}</p>
+		<li>
+			<Link href={`/courses/lectures/${props.lectureId}`}>
+				<div className="w-full py-1 border border-b-black hover:bg-gray-100 cursor-pointer">
+					<Link href={`/courses/${props.courseId}`}>
+						<p className="font-extrabold text-xl pt-2 inline-block">
+							{props.course}
+						</p>
+					</Link>
+					<p>{props.lecture}</p>
+					<p>{DateToString(props.date)}</p>
+				</div>
+			</Link>
 		</li>
 	);
 };
@@ -50,16 +49,13 @@ export const CourseListItem: React.FC<CourseItemProps> = (
 	props: CourseItemProps,
 ) => {
 	return (
-		<li
-			className="w-full py-1 flex justify-between border border-b-black hover:bg-gray-100 cursor-pointer"
-			onClick={function (e) {
-				window.location.href = `/courses/${props.courseId}`;
-			}}
-		>
-			<h1>{props.course}</h1>
-			<a href={`/courses/list?uid=${props.professorId}`}>
-				{props.professor}
-			</a>
+		<li>
+			<Link href={`/courses/${props.courseId}`}>
+				<div className="w-full py-1 flex justify-between border border-b-black hover:bg-gray-100 cursor-pointer">
+					<p>{props.course}</p>
+					<p>{props.professor}</p>
+				</div>
+			</Link>
 		</li>
 	);
 };
@@ -68,14 +64,13 @@ export const LectureListItem: React.FC<LectureItemProps> = (
 	props: LectureItemProps,
 ) => {
 	return (
-		<li
-			className="w-full py-1 flex justify-between border border-b-black hover:bg-gray-100 cursor-pointer"
-			onClick={function (e) {
-				window.location.href = `/courses/lectures/${props.lectureId}`;
-			}}
-		>
-			<h1>{props.lecture}</h1>
-			<p>{DateToString(props.date)}</p>
+		<li>
+			<Link href={`/courses/lectures/${props.lectureId}`}>
+				<div className="w-full py-1 flex justify-between border border-b-black hover:bg-gray-100 cursor-pointer">
+					<p>{props.lecture}</p>
+					<p>{DateToString(props.date)}</p>
+				</div>
+			</Link>
 		</li>
 	);
 };
@@ -86,7 +81,7 @@ export const MemberListItem: React.FC<MemberItemProps> = (
 	const memberBan = async () => {
 		axios({
 			method: 'DELETE',
-			url:'http://localhost:3000/applications/drop/'
+			url: 'http://localhost:3000/applications/drop/',
 		});
 	};
 

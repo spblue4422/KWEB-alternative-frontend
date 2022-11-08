@@ -5,13 +5,13 @@ import { TextInput } from './Input';
 import { SubmitButton, ClickButton } from './Button';
 import { FormLayout } from '../layouts/FormLayout';
 
-export const LoginForm: React.FC = () => {
+export const LoginModal: React.FC = () => {
 	const joinModalOpen = async () => {
-		const joinForm = document.getElementById('join_form') as HTMLDivElement;
+		const joinModal = document.getElementById('join_modal') as HTMLDivElement;
 		const joinBack = document.getElementById('join_back') as HTMLDivElement;
 
-		joinForm.classList.replace('opacity-0', 'opacity-100');
-		joinForm.classList.replace('z-0', 'z-30');
+		joinModal.classList.replace('opacity-0', 'opacity-100');
+		joinModal.classList.replace('z-0', 'z-30');
 		joinBack.classList.replace('opacity-0', 'opacity-60');
 		joinBack.classList.replace('z-0', 'z-20');
 		joinBack.classList.add('blur-sm');
@@ -49,7 +49,7 @@ export const LoginForm: React.FC = () => {
 
 	return (
 		<FormLayout
-			id={'login_form'}
+			id={'login_modal'}
 			submitFunc={login}
 			class={'w-[480px] h-[380px] z-10'}
 		>
@@ -71,13 +71,13 @@ export const LoginForm: React.FC = () => {
 				></TextInput>
 				<SubmitButton
 					id={'login_sub_btn'}
-					class={'w-full bg-crimson text-white mt-6'}
+					class={'w-full bg-crimson text-white hover:bg-[#4a0000] mt-6'}
 				>
 					LOGIN
 				</SubmitButton>
 				<ClickButton
 					id={'signup_clk_btn'}
-					class={'w-full border text-crimson border-crimson mt-2'}
+					class={'w-full border text-crimson border-crimson hover:bg-gray-100 mt-2'}
 					onClick={joinModalOpen}
 				>
 					SIGN UP

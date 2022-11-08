@@ -5,7 +5,7 @@ import { FormLayout } from '../layouts/FormLayout';
 import { SubmitButton } from './Button';
 import { RadioInput, TextInput } from './Input';
 
-const JoinForm: React.FC = () => {
+const JoinModal: React.FC = () => {
 	const [status, setStatus] = useState('student');
 
 	const isChecked = () => {
@@ -17,7 +17,7 @@ const JoinForm: React.FC = () => {
 	};
 
 	const joinModalClose = async () => {
-		const joinForm = document.getElementById('join_form') as HTMLDivElement;
+		const joinModal = document.getElementById('join_modal') as HTMLDivElement;
 		const joinBack = document.getElementById('join_back') as HTMLDivElement;
 		const inputId = document.getElementById(
 			'input_new_id',
@@ -32,8 +32,8 @@ const JoinForm: React.FC = () => {
 			'input_new_un',
 		) as HTMLInputElement;
 
-		joinForm.classList.replace('opacity-100', 'opacity-0');
-		joinForm.classList.replace('z-30', 'z-0');
+		joinModal.classList.replace('opacity-100', 'opacity-0');
+		joinModal.classList.replace('z-30', 'z-0');
 		joinBack.classList.replace('opacity-60', 'opacity-0');
 		joinBack.classList.replace('z-20', 'z-0');
 		joinBack.classList.remove('blur-sm');
@@ -94,7 +94,7 @@ const JoinForm: React.FC = () => {
 				className="absolute w-full h-full bg-[#666666] z-0 opacity-0"
 			></div>
 			<FormLayout
-				id={'join_form'}
+				id={'join_modal'}
 				submitFunc={join}
 				class={
 					'w-[480px] h-[500px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] opacity-0 z-0 drop-shadow-lg'
@@ -179,4 +179,4 @@ const JoinForm: React.FC = () => {
 	);
 };
 
-export default JoinForm;
+export default JoinModal;

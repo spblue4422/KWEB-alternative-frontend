@@ -5,10 +5,10 @@ import { FormLayout } from '../layouts/FormLayout';
 import { TextInput } from './Input';
 
 //나중에 add용인지 edit용인지도 확장 가능하게끔
-export const CourseForm: React.FC = () => {
+export const CourseModal: React.FC = () => {
 	const courseModalClose = async () => {
-		const courseForm = document.getElementById(
-			'course_form',
+		const courseModal = document.getElementById(
+			'course_modal',
 		) as HTMLDivElement;
 		const courseBack = document.getElementById(
 			'course_back',
@@ -21,8 +21,8 @@ export const CourseForm: React.FC = () => {
 			'input_crs_dscrp',
 		) as HTMLInputElement;
 
-		courseForm.classList.replace('opacity-100', 'opacity-0');
-		courseForm.classList.replace('z-30', 'z-0');
+		courseModal.classList.replace('opacity-100', 'opacity-0');
+		courseModal.classList.replace('z-30', 'z-0');
 		courseBack.classList.replace('opacity-60', 'opacity-0');
 		courseBack.classList.replace('z-20', 'z-0');
 		courseBack.classList.remove('blur-sm');
@@ -79,7 +79,7 @@ export const CourseForm: React.FC = () => {
 				className="absolute w-full h-full bg-[#666666] z-0 opacity-0"
 			></div>
 			<FormLayout
-				id={'course_form'}
+				id={'course_modal'}
 				submitFunc={addCourse}
 				class={
 					'w-[960px] h-[600px] min-w-[480px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0'

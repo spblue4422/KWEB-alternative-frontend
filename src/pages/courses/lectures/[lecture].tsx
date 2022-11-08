@@ -2,8 +2,9 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
+import { VscTrash, VscChevronLeft } from 'react-icons/vsc';
 import { Layout } from '../../../layouts/Layout';
-import { LectureForm } from '../../../components/LectureForm';
 import { ClickButton } from '../../../components/Button';
 import { DateToString } from '../../../util/dateToString';
 
@@ -53,31 +54,6 @@ const Lecture: NextPage = () => {
 			});
 	};
 
-	// const lectureModalOpen = async () => {
-	// 	const lectureForm = document.getElementById(
-	// 		'lecture_form',
-	// 	) as HTMLDivElement;
-	// 	const lectureBack = document.getElementById(
-	// 		'lecture_back',
-	// 	) as HTMLDivElement;
-
-	// 	const inputTitle = document.getElementById(
-	// 		'input_lec_ttl',
-	// 	) as HTMLInputElement;
-	// 	const inputCtnt = document.getElementById(
-	// 		'input_lec_ctnt',
-	// 	) as HTMLInputElement;
-
-	// 	inputTitle.value = ldata.title;
-	// 	inputCtnt.value = ldata.content;
-
-	// 	lectureForm.classList.replace('opacity-0', 'opacity-100');
-	// 	lectureForm.classList.replace('z-0', 'z-30');
-	// 	lectureBack.classList.replace('opacity-0', 'opacity-60');
-	// 	lectureBack.classList.replace('z-0', 'z-20');
-	// 	lectureBack.classList.add('blur-sm');
-	// };
-
 	useEffect(() => {
 		if (!router.isReady) return;
 
@@ -106,28 +82,38 @@ const Lecture: NextPage = () => {
 
 	return (
 		<>
-			{/* <LectureForm
-				courseId={ldata.course.id}
-				courseName={ldata.course.name}
-			></LectureForm> */}
 			<Layout>
-				<div className="flex justify-between">
-					<p>{ldata.course.name}</p>
-					{obj ? (
-						<ClickButton
-							id={'dellec_clk_btn'}
-							class={'w-20 bg-crimson text-white'}
-							onClick={deleteLecture}
-						>강의 삭제</ClickButton>
-					) : (
-						<div></div>
-					)}
+				<div className="z-10">
+					<div className="flex justify-between">
+						<Link href={`/courses/${ldata.course.id}`}>
+							<p className="text-xl font-bold leading-8 flex items-center cursor-pointer">
+								<VscChevronLeft size={24}></VscChevronLeft>
+								{ldata.course.name}
+							</p>
+						</Link>
+						{obj ? (
+							<ClickButton
+								id={'dellec_clk_btn'}
+								class={
+									'w-8 h-8 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000] drop-shadow-md	'
+								}
+								onClick={deleteLecture}
+							>
+								<VscTrash size={20}></VscTrash>
+							</ClickButton>
+						) : (
+							''
+						)}
+					</div>
+					<div className="w-full mt-8 text-center">
+						<p className="text2xl font-bold">{ldata.title}</p>
+						<p className="float-right">
+							{DateToString(ldata.createdDate)}
+						</p>
+					</div>
+
+					<div className="mt-10">{ldata.content}</div>
 				</div>
-				<div className="flex justify-between">
-					<p>{ldata.title}</p>
-					<p>{DateToString(ldata.createdDate)}</p>
-				</div>
-				<div>{ldata.content}</div>
 			</Layout>
 		</>
 	);

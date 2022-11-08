@@ -1,11 +1,12 @@
 import { NextPage } from 'next';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaPlus } from 'react-icons/fa';
 import { Layout } from '../layouts/Layout';
 import { CourseListItem } from '../components/ListItem';
 import { DateToString } from '../util/dateToString';
 import { ClickButton } from '../components/Button';
-import { CourseForm } from '../components/CourseForm';
+import { CourseModal } from '../components/CourseModal';
 
 const MyPage: NextPage = () => {
 	const [udata, setUdata] = useState({
@@ -19,15 +20,15 @@ const MyPage: NextPage = () => {
 	const [cdata, setCdata] = useState(new Array<any>());
 
 	const courseModalOpen = async () => {
-		const courseForm = document.getElementById(
-			'course_form',
+		const courseModal = document.getElementById(
+			'course_modal',
 		) as HTMLDivElement;
 		const courseBack = document.getElementById(
 			'course_back',
 		) as HTMLDivElement;
 
-		courseForm.classList.replace('opacity-0', 'opacity-100');
-		courseForm.classList.replace('z-0', 'z-30');
+		courseModal.classList.replace('opacity-0', 'opacity-100');
+		courseModal.classList.replace('z-0', 'z-30');
 		courseBack.classList.replace('opacity-0', 'opacity-60');
 		courseBack.classList.replace('z-0', 'z-20');
 		courseBack.classList.add('blur-sm');
@@ -67,58 +68,67 @@ const MyPage: NextPage = () => {
 
 	return (
 		<>
-			<CourseForm></CourseForm>
+			<CourseModal></CourseModal>
 			<Layout>
-				<h1>내 정보</h1>
-				<div className="flex justify-between">
-					<p>이름</p>
-					<p>{udata.name}</p>
-				</div>
-				<div className="flex justify-between">
-					<p>학번/교번</p>
-					<p>{udata.uniqueNum}</p>
-				</div>
-				<div className="flex justify-between">
-					<p>아이디</p>
-					<p>{udata.userId}</p>
-				</div>
-				<div className="flex justify-between">
-					<p>신분</p>
-					<p>{udata.status}</p>
-				</div>
-				<div className="flex justify-between">
-					<p>가입일자</p>
-					<p>{DateToString(udata.createdDate).slice(0, 10)}</p>
-				</div>
-				<div className="flex justify-between">
-					<p>
-						{udata.status == 'student' ? '신청 강의' : '개설 강의'}
+				<div className="z-10">
+					<p className="text-3xl font-extrabold leading-relaxed">
+						내 정보
 					</p>
-					{udata.status == 'student' ? (
-						''
-					) : (
-						<ClickButton
-							id={'addcrs_clk_btn'}
-							class={
-								'w-20 bg-white text-crimson drop-shadow-md border border-crimson'
-							}
-							onClick={courseModalOpen}
-						>
-							코스 추가
-						</ClickButton>
-					)}
+					{/* <div className="mt-6 w-20 text-center leading-relaxed rounded-lg border text-crimson border-crimson">
+                        Professor
+                    </div> */}
+					<div className="flex justify-between">
+						<p>이름</p>
+						<p>{udata.name}</p>
+					</div>
+					<div className="flex justify-between">
+						<p>학번/교번</p>
+						<p>{udata.uniqueNum}</p>
+					</div>
+					<div className="flex justify-between">
+						<p>아이디</p>
+						<p>{udata.userId}</p>
+					</div>
+					<div className="flex justify-between">
+						<p>신분</p>
+						<p>{udata.status}</p>
+					</div>
+					<div className="flex justify-between">
+						<p>가입일</p>
+						<p>{DateToString(udata.createdDate).slice(0, 10)}</p>
+					</div>
+					<div className="mt-10">
+						<p className="text-lg font-bold">
+							{udata.status == 'student'
+								? '신청 코스 목록'
+								: '개설 코스 목록'}
+						</p>
+						<ul className="w-full max-h-[120px] overflow-scroll mt-2">
+							{cdata.map((dt, idx) => (
+								<CourseListItem
+									key={`CLI_${idx}`}
+									courseId={dt.id}
+									course={dt.name}
+									professorId={dt.user.userId}
+									professor={dt.user.name}
+								></CourseListItem>
+							))}
+						</ul>
+						{udata.status == 'student' ? (
+							''
+						) : (
+							<ClickButton
+								id={'addcrs_clk_btn'}
+								class={
+									'w-12 float-right mt-2 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000] drop-shadow-md'
+								}
+								onClick={courseModalOpen}
+							>
+								<FaPlus size={24}></FaPlus>
+							</ClickButton>
+						)}
+					</div>
 				</div>
-				<ul className="w-full overflow-scroll flex-1 z-10">
-					{cdata.map((dt, idx) => (
-						<CourseListItem
-							key={`CLI_${idx}`}
-							courseId={dt.id}
-							course={dt.name}
-							professorId={dt.user.userId}
-							professor={dt.user.name}
-						></CourseListItem>
-					))}
-				</ul>
 			</Layout>
 		</>
 	);

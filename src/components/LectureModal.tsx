@@ -4,18 +4,18 @@ import { VscChromeClose } from 'react-icons/vsc';
 import { FormLayout } from '../layouts/FormLayout';
 import { TextInput } from './Input';
 
-interface lectureFormProps {
+interface lectureModalProps {
 	courseId: number;
 	courseName: string;
 }
 
 //나중에 add용인지 edit용인지도 확장 가능하게끔
-export const LectureForm: React.FC<lectureFormProps> = (
-	props: lectureFormProps,
+export const LectureModal: React.FC<lectureModalProps> = (
+	props: lectureModalProps,
 ) => {
 	const lectureModalClose = async () => {
-		const lectureForm = document.getElementById(
-			'lecture_form',
+		const LectureModal = document.getElementById(
+			'lecture_modal',
 		) as HTMLDivElement;
 		const lectureBack = document.getElementById(
 			'lecture_back',
@@ -28,8 +28,8 @@ export const LectureForm: React.FC<lectureFormProps> = (
 			'input_lec_ctnt',
 		) as HTMLInputElement;
 
-		lectureForm.classList.replace('opacity-100', 'opacity-0');
-		lectureForm.classList.replace('z-30', 'z-0');
+		LectureModal.classList.replace('opacity-100', 'opacity-0');
+		LectureModal.classList.replace('z-30', 'z-0');
 		lectureBack.classList.replace('opacity-60', 'opacity-0');
 		lectureBack.classList.replace('z-20', 'z-0');
 		lectureBack.classList.remove('blur-sm');
@@ -79,47 +79,6 @@ export const LectureForm: React.FC<lectureFormProps> = (
 			});
 	};
 
-	// const editLecture = async (e: React.FormEvent<HTMLFormElement>) => {
-	// 	e.preventDefault();
-
-	//     const inputTitle = document.getElementById(
-	// 		'input_lec_ttl',
-	// 	) as HTMLInputElement;
-	// 	const inputCtnt = document.getElementById(
-	// 		'input_lec_ctnt',
-	// 	) as HTMLInputElement;
-
-	//     await axios({
-	// 		method: 'POST',
-	// 		url: 'http://localhost:3210/courses/lectures/add',
-	// 		data: {
-	// 			courseId: props.courseId,
-	// 			title: inputTitle.value,
-	// 			content: inputCtnt.value,
-	// 		},
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 		},
-	// 		withCredentials: true,
-	// 	})
-	// 		.then((res) => {
-	// 			if (res.data.code == 'SUCCESS') {
-	// 				alert('강의등록 성공');
-	// 				lectureModalClose();
-	// 			} else {
-	// 				alert(res.data.msg);
-	// 			}
-	// 		})
-	// 		.catch((error) => {
-	// 			if (error.response.status == 401) {
-	// 				alert('로그인이 필요한 화면입니다.');
-	// 				window.location.href = 'http://localhost:3210/login';
-	// 			} else {
-	// 				alert('알 수 없는 오류입니다. 다시 시도해주세요.');
-	// 			}
-	// 		});
-	// };
-
 	return (
 		<>
 			<div
@@ -127,7 +86,7 @@ export const LectureForm: React.FC<lectureFormProps> = (
 				className="absolute w-full h-full bg-[#666666] z-0 opacity-0"
 			></div>
 			<FormLayout
-				id={'lecture_form'}
+				id={'lecture_modal'}
 				submitFunc={addLecture}
 				class={
 					'w-[960px] h-[600px] min-w-[480px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0'

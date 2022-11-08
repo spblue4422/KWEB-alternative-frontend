@@ -57,36 +57,38 @@ const Search: NextPage = () => {
 
 	return (
 		<Layout>
-			<form
-				onSubmit={searchAllCoursesByInput}
-				className="w-full flex justify-between z-10"
-			>
-				<TextInput
-					id={'input_srch'}
-					type={'text'}
-					hold={'검색'}
-					class={'w-[80%]'}
-				></TextInput>
-				<SubmitButton
-					id={'srch_sub_btn'}
-					class={
-						'w-10 bg-crimson text-white hover:bg-[#4a0000] drop-shadow-md'
-					}
+			<div className="z-10">
+				<form
+					onSubmit={searchAllCoursesByInput}
+					className="w-full flex justify-between"
 				>
-					검색
-				</SubmitButton>
-			</form>
-			<ul className="w-full overflow-scroll flex-1 z-10">
-				{data.map((dt, idx) => (
-					<CourseListItem
-						key={`CLI_${idx}`}
-						courseId={dt.id}
-						course={dt.name}
-						professorId={dt.user.userId}
-						professor={dt.user.name}
-					></CourseListItem>
-				))}
-			</ul>
+					<TextInput
+						id={'input_srch'}
+						type={'text'}
+						hold={'검색'}
+						class={'w-[80%]'}
+					></TextInput>
+					<SubmitButton
+						id={'srch_sub_btn'}
+						class={
+							'w-10 bg-crimson text-white hover:bg-[#4a0000] drop-shadow-md'
+						}
+					>
+						검색
+					</SubmitButton>
+				</form>
+				<ul className="w-full mt-6 overflow-scroll max-h-[240px]">
+					{data.map((dt, idx) => (
+						<CourseListItem
+							key={`CLI_${idx}`}
+							courseId={dt.id}
+							course={dt.name}
+							professorId={dt.user.userId}
+							professor={dt.user.name}
+						></CourseListItem>
+					))}
+				</ul>
+			</div>
 		</Layout>
 	);
 };

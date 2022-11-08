@@ -29,19 +29,21 @@ const Home: NextPage = () => {
 
 	return (
 		<Layout>
-			<p className="font-extrabold text-3xl">업데이트된 강의 목록</p>
-			<ul className="w-full overflow-scroll flex-1">
-				{data.map((dt, idx) => (
-					<ApplicationListItem
-						key={`ALI_${idx}`}
-						courseId={dt.course.id}
-						course={dt.course.name}
-						lectureId={dt.id}
-						lecture={dt.title}
-						date={dt.createdDate}
-					></ApplicationListItem>
-				))}
-			</ul>
+			<div>
+				<p className="font-extrabold text-3xl">업데이트된 강의 목록</p>
+				<ul className="w-full overflow-scroll max-h-[540px]">
+					{data.map((dt, idx) => (
+						<ApplicationListItem
+							key={`ALI_${idx}`}
+							courseId={dt.course.id}
+							course={dt.course.name}
+							lectureId={dt.id}
+							lecture={dt.title}
+							date={dt.createdDate}
+						></ApplicationListItem>
+					))}
+				</ul>
+			</div>
 		</Layout>
 	);
 };
