@@ -3,6 +3,7 @@ import axios from 'axios';
 import { VscChromeClose } from 'react-icons/vsc';
 import { FormLayout } from '../layouts/FormLayout';
 import { TextInput } from './Input';
+import { SubmitButton } from './Button';
 
 interface lectureModalProps {
 	courseId: number;
@@ -89,7 +90,7 @@ export const LectureModal: React.FC<lectureModalProps> = (
 				id={'lecture_modal'}
 				submitFunc={addLecture}
 				class={
-					'w-[960px] h-[600px] min-w-[480px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0'
+					'w-[800px] h-[600px] min-w-[480px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0'
 				}
 			>
 				<VscChromeClose
@@ -98,19 +99,27 @@ export const LectureModal: React.FC<lectureModalProps> = (
 					className="absolute top-6 right-6 cursor-pointer"
 					onClick={lectureModalClose}
 				></VscChromeClose>
-				<div className="w-[720px] flex flex-col">
-					<p>강의 게시물 추가</p>
-					<p>{props.courseName}</p>
-					<TextInput
-						id={'input_lec_ttl'}
-						type={'text'}
-						class={''}
-					></TextInput>
-					<TextInput
-						id={'input_lec_ctnt'}
-						type={'text'}
-						class={'h-[400px]'}
-					></TextInput>
+				<div className="w-[640px] flex flex-col">
+					<p className="font-extrabold text-xl">
+						강의 추가 - {props.courseName}
+					</p>
+					<div className="mt-6">
+						<p className="font-bold">제목</p>
+						<TextInput
+							id={'input_lec_ttl'}
+							type={'text'}
+							maxLen={25}
+							class={'w-full mt-2'}
+						></TextInput>
+					</div>
+					<div className="mt-2">
+						<p className="font-bold">내용</p>
+						<textarea
+							id="input_lec_ctnt"
+							className="mt-2 w-full h-[260px] border border-gray-300 rounded-md px-2 py-1 text-lg resize-none"
+						></textarea>
+					</div>
+					<SubmitButton id={'addlec_sub_btn'} class={'bg-crimson text-white hover:bg-[#4a0000] mt-2'}>Add</SubmitButton>
 				</div>
 			</FormLayout>
 		</>

@@ -31,7 +31,7 @@ const Home: NextPage = () => {
 		<Layout>
 			<div>
 				<p className="font-extrabold text-3xl">업데이트된 강의 목록</p>
-				<ul className="w-full overflow-scroll max-h-[540px]">
+				<ul className="w-full overflow-hidden hover:overflow-y-scroll max-h-[540px] mt-6 drop-shadow-md">
 					{data.map((dt, idx) => (
 						<ApplicationListItem
 							key={`ALI_${idx}`}

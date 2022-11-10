@@ -2,8 +2,9 @@ import { PropsWithChildren } from 'react';
 
 interface TextInputProps extends PropsWithChildren {
 	id: string;
-	hold?: string;
 	type: string;
+	hold?: string;
+	maxLen?: number;
 	class?: string;
 }
 
@@ -22,6 +23,7 @@ export const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
 			id={props.id}
 			type={props.type}
 			placeholder={props.hold}
+			maxLength={props.maxLen}
 			className={`${props.class} border border-gray-300 rounded-md px-2 py-1 text-lg`}
 		></input>
 	);

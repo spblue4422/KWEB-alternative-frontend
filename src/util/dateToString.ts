@@ -13,7 +13,6 @@ export const DateToString = (date: string) => {
 		Nov: '11',
 		Dec: '12',
 	};
-
 	const nDate = new Date(date);
 	const dStr = nDate.toDateString().split(' ');
 	const dRet = dStr[3] + '-' + monthRcd[dStr[1]] + '-' + dStr[2] + ' ';

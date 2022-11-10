@@ -3,7 +3,7 @@ import { FormEventHandler, PropsWithChildren } from 'react';
 interface FormLayoutProps extends PropsWithChildren {
 	submitFunc: FormEventHandler;
 	id: string;
-	class: string;
+	class?: string;
 }
 
 export const FormLayout: React.FC<FormLayoutProps> = (

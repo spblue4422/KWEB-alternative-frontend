@@ -77,7 +77,7 @@ const Search: NextPage = () => {
 						검색
 					</SubmitButton>
 				</form>
-				<ul className="w-full mt-6 overflow-scroll max-h-[240px]">
+				<ul className="w-full mt-6 overflow-hidden hover:overflow-y-scroll max-h-[240px]">
 					{data.map((dt, idx) => (
 						<CourseListItem
 							key={`CLI_${idx}`}

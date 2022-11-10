@@ -4,6 +4,7 @@ import { MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { VscTrash, VscChevronLeft } from 'react-icons/vsc';
+import { CheckModal } from '../../../components/CheckModal';
 import { Layout } from '../../../layouts/Layout';
 import { ClickButton } from '../../../components/Button';
 import { DateToString } from '../../../util/dateToString';
@@ -14,16 +15,16 @@ const Lecture: NextPage = () => {
 	const [obj, setObj] = useState(0);
 	const [ldata, setLdata] = useState({
 		id: 0,
-		title: '',
-		content: '',
+		title: 'default',
+		content: 'default',
 		createdDate: '',
 		course: {
 			id: 0,
-			name: '',
+			name: 'default',
 			user: {
 				id: 0,
-				userId: '',
-				name: '',
+				userId: 'default',
+				name: 'default',
 			},
 		},
 	});
@@ -82,6 +83,7 @@ const Lecture: NextPage = () => {
 
 	return (
 		<>
+			{/* <CheckModal modalId={''}></CheckModal> */}
 			<Layout>
 				<div className="z-10">
 					<div className="flex justify-between">
@@ -95,7 +97,7 @@ const Lecture: NextPage = () => {
 							<ClickButton
 								id={'dellec_clk_btn'}
 								class={
-									'w-8 h-8 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000] drop-shadow-md	'
+									'w-8 h-8 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000]'
 								}
 								onClick={deleteLecture}
 							>
@@ -111,8 +113,7 @@ const Lecture: NextPage = () => {
 							{DateToString(ldata.createdDate)}
 						</p>
 					</div>
-
-					<div className="mt-10">{ldata.content}</div>
+					<div className="mt-16 mx-6">{ldata.content}</div>
 				</div>
 			</Layout>
 		</>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
+import { SlBan } from 'react-icons/sl';
 import { DateToString } from '../util/dateToString';
 
 interface CourseItemProps {
@@ -31,9 +32,9 @@ export const ApplicationListItem: React.FC<
 	return (
 		<li>
 			<Link href={`/courses/lectures/${props.lectureId}`}>
-				<div className="w-full py-1 border border-b-black hover:bg-gray-100 cursor-pointer">
+				<div className="w-full py-2 border border-b-black hover:bg-gray-100 cursor-pointer">
 					<Link href={`/courses/${props.courseId}`}>
-						<p className="font-extrabold text-xl pt-2 inline-block">
+						<p className="font-extrabold text-xl inline-block">
 							{props.course}
 						</p>
 					</Link>
@@ -86,10 +87,19 @@ export const MemberListItem: React.FC<MemberItemProps> = (
 	};
 
 	return (
-		<li className="w-full flex border border-b-black">
-			<div className="border border-b-black">{props.userId}</div>
-			<div className="border border-b-black">{props.uniqueNum}</div>
-			<div className="border border-b-black">{props.name}</div>
+		<li className="w-full flex">
+			<div className="flex-1 border-b border-l border-black text-center">
+				{props.userId}
+			</div>
+			<div className="flex-1 border-b border-l border-black text-center">
+				{props.uniqueNum}
+			</div>
+			<div className="flex-1 border-b border-x border-black text-center">
+				{props.name}
+			</div>
+			<div className="w-[30px] flex border-black justify-center items-center">
+				<SlBan size={16}></SlBan>
+			</div>
 		</li>
 	);
 };

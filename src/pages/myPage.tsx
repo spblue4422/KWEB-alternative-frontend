@@ -74,9 +74,6 @@ const MyPage: NextPage = () => {
 					<p className="text-3xl font-extrabold leading-relaxed">
 						내 정보
 					</p>
-					{/* <div className="mt-6 w-20 text-center leading-relaxed rounded-lg border text-crimson border-crimson">
-                        Professor
-                    </div> */}
 					<div className="flex justify-between">
 						<p>이름</p>
 						<p>{udata.name}</p>
@@ -103,7 +100,7 @@ const MyPage: NextPage = () => {
 								? '신청 코스 목록'
 								: '개설 코스 목록'}
 						</p>
-						<ul className="w-full max-h-[120px] overflow-scroll mt-2">
+						<ul className="w-full max-h-[120px] overflow-hidden hover:overflow-y-scroll mt-2">
 							{cdata.map((dt, idx) => (
 								<CourseListItem
 									key={`CLI_${idx}`}

@@ -5,6 +5,7 @@ import { MemberListItem } from './ListItem';
 
 interface memberModalProps {
 	courseId: number;
+    self: boolean;
 }
 
 export const MemberModal: React.FC<memberModalProps> = (
@@ -28,7 +29,7 @@ export const MemberModal: React.FC<memberModalProps> = (
 	};
 
 	useEffect(() => {
-		if (!props.courseId) return;
+		if (!props.courseId || !props.self) return;
 		axios({
 			method: 'GET',
 			url: `http://localhost:3000/courses/users/list?cid=${props.courseId}`,
@@ -61,15 +62,22 @@ export const MemberModal: React.FC<memberModalProps> = (
 			></div>
 			<div
 				id="member_modal"
-				className="bg-white mx-auto rounded-2xl flex items-center justify-center w-[480px] h-[600px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0"
+				className="bg-white mx-auto py-6 rounded-2xl flex items-center justify-center w-[420px] max-h-[600px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-0 opacity-0"
 			>
 				<VscChromeClose
 					id="icon_x"
 					size={28}
-					className="absolute top-6 right-6 cursor-pointer"
+					className="absolute top-3 right-3 cursor-pointer"
 					onClick={memberModalClose}
 				></VscChromeClose>
-				<div className="w-[320px] flex flex-col">
+				<div className="w-[322px] flex flex-col">
+                    <p className="font-bold text-lg text-center">수강 인원</p>
+					<div className="w-full flex mt-2">
+						<div className="flex-1 border-y border-l border-black text-center">아이디</div>
+						<div className="flex-1 border-y border-l border-black text-center">학번</div>
+						<div className="flex-1 border-y border-x border-black text-center">이름</div>
+                        <div className="w-[30px]"></div>
+					</div>
 					<ul className="w-full">
 						{mdata.map((dt, idx) => (
 							<MemberListItem
