@@ -6,8 +6,6 @@ import { Layout } from '../layouts/Layout';
 import { useCookies } from 'react-cookie';
 
 const Home: NextPage = () => {
-	//메인 페이지 - 본인이 신청한 강의가 보임.
-	const [cookies, setCookie, removeCookie] = useCookies(['Authorization']);
 	const [data, setData] = useState(new Array<any>());
 
 	useEffect(() => {

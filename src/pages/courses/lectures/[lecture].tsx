@@ -8,6 +8,7 @@ import { CheckModal } from '../../../components/CheckModal';
 import { Layout } from '../../../layouts/Layout';
 import { ClickButton } from '../../../components/Button';
 import { DateToString } from '../../../util/dateToString';
+import { modalClose, modalOpen } from '../../../util/modal';
 
 const Lecture: NextPage = () => {
 	const router = useRouter();
@@ -31,8 +32,9 @@ const Lecture: NextPage = () => {
 
 	const deleteLecture = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		modalClose('check');
 
-		axios({
+		await axios({
 			method: 'DELETE',
 			url: `http://localhost:3000/courses/lectures/remove/${lecture}`,
 			withCredentials: true,
@@ -40,7 +42,7 @@ const Lecture: NextPage = () => {
 			.then((res) => {
 				if (res.data.code == 'SUCCESS') {
 					alert(res.data.msg);
-					window.location.href = `http://localhost:3000/courses/${ldata.course.id}`;
+					window.location.href = `http://localhost:3210/courses/${ldata.course.id}`;
 				} else {
 					alert(res.data.msg);
 				}
@@ -83,7 +85,11 @@ const Lecture: NextPage = () => {
 
 	return (
 		<>
-			{/* <CheckModal modalId={''}></CheckModal> */}
+			<CheckModal confirmFunc={deleteLecture}>
+				강의를
+				<br />
+				삭제하시겠습니까?
+			</CheckModal>
 			<Layout>
 				<div className="z-10">
 					<div className="flex justify-between">
@@ -99,7 +105,9 @@ const Lecture: NextPage = () => {
 								class={
 									'w-8 h-8 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000]'
 								}
-								onClick={deleteLecture}
+								onClick={(e) => {
+									modalOpen('check');
+								}}
 							>
 								<VscTrash size={20}></VscTrash>
 							</ClickButton>

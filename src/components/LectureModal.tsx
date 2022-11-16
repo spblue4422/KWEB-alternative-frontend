@@ -4,6 +4,8 @@ import { VscChromeClose } from 'react-icons/vsc';
 import { FormLayout } from '../layouts/FormLayout';
 import { TextInput } from './Input';
 import { SubmitButton } from './Button';
+import { modalClose } from '../util/modal';
+import { spaceCheck } from '../util/textCheck';
 
 interface lectureModalProps {
 	courseId: number;
@@ -14,31 +16,6 @@ interface lectureModalProps {
 export const LectureModal: React.FC<lectureModalProps> = (
 	props: lectureModalProps,
 ) => {
-	const lectureModalClose = async () => {
-		const LectureModal = document.getElementById(
-			'lecture_modal',
-		) as HTMLDivElement;
-		const lectureBack = document.getElementById(
-			'lecture_back',
-		) as HTMLDivElement;
-
-		const inputTitle = document.getElementById(
-			'input_lec_ttl',
-		) as HTMLInputElement;
-		const inputCtnt = document.getElementById(
-			'input_lec_ctnt',
-		) as HTMLInputElement;
-
-		LectureModal.classList.replace('opacity-100', 'opacity-0');
-		LectureModal.classList.replace('z-30', 'z-0');
-		lectureBack.classList.replace('opacity-60', 'opacity-0');
-		lectureBack.classList.replace('z-20', 'z-0');
-		lectureBack.classList.remove('blur-sm');
-
-		//
-		inputTitle.value = '';
-		inputCtnt.value = '';
-	};
 	const addLecture = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -49,9 +26,14 @@ export const LectureModal: React.FC<lectureModalProps> = (
 			'input_lec_ctnt',
 		) as HTMLInputElement;
 
+		if (!(await spaceCheck([inputTitle.value, inputCtnt.value]))) {
+			alert('입력한 내용을 확인해주세요. 빈 값은 허용되지 않습니다.');
+			return;
+		}
+
 		await axios({
 			method: 'POST',
-			url: 'http://localhost:3210/courses/lectures/add',
+			url: 'http://localhost:3000/courses/lectures/add',
 			data: {
 				courseId: props.courseId,
 				title: inputTitle.value,
@@ -64,8 +46,9 @@ export const LectureModal: React.FC<lectureModalProps> = (
 		})
 			.then((res) => {
 				if (res.data.code == 'SUCCESS') {
-					alert('강의등록 성공');
-					lectureModalClose();
+					alert(res.data.msg);
+					modalClose('lecture');
+					window.location.reload();
 				} else {
 					alert(res.data.msg);
 				}
@@ -97,7 +80,9 @@ export const LectureModal: React.FC<lectureModalProps> = (
 					id="icon_x"
 					size={28}
 					className="absolute top-6 right-6 cursor-pointer"
-					onClick={lectureModalClose}
+					onClick={(e) => {
+						modalClose('lecture');
+					}}
 				></VscChromeClose>
 				<div className="w-[640px] flex flex-col">
 					<p className="font-extrabold text-xl">
@@ -119,7 +104,12 @@ export const LectureModal: React.FC<lectureModalProps> = (
 							className="mt-2 w-full h-[260px] border border-gray-300 rounded-md px-2 py-1 text-lg resize-none"
 						></textarea>
 					</div>
-					<SubmitButton id={'addlec_sub_btn'} class={'bg-crimson text-white hover:bg-[#4a0000] mt-2'}>Add</SubmitButton>
+					<SubmitButton
+						id={'addlec_sub_btn'}
+						class={'bg-crimson text-white hover:bg-[#4a0000] mt-2'}
+					>
+						Add
+					</SubmitButton>
 				</div>
 			</FormLayout>
 		</>

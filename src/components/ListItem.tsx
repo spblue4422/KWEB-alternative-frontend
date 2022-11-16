@@ -97,9 +97,9 @@ export const MemberListItem: React.FC<MemberItemProps> = (
 			<div className="flex-1 border-b border-x border-black text-center">
 				{props.name}
 			</div>
-			<div className="w-[30px] flex border-black justify-center items-center">
+			{/* <div className="w-[30px] flex border-black justify-center items-center">
 				<SlBan size={16}></SlBan>
-			</div>
+			</div> */}
 		</li>
 	);
 };

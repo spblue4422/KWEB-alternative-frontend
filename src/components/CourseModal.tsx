@@ -1,38 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { VscChromeClose } from 'react-icons/vsc';
 import { FormLayout } from '../layouts/FormLayout';
 import { TextInput } from './Input';
 import { SubmitButton } from './Button';
+import { modalClose } from '../util/modal';
+import { spaceCheck } from '../util/textCheck';
 
 //나중에 add용인지 edit용인지도 확장 가능하게끔
 export const CourseModal: React.FC = () => {
-	const courseModalClose = async () => {
-		const courseModal = document.getElementById(
-			'course_modal',
-		) as HTMLDivElement;
-		const courseBack = document.getElementById(
-			'course_back',
-		) as HTMLDivElement;
-
-		const inputName = document.getElementById(
-			'input_crs_name',
-		) as HTMLInputElement;
-		const inputDscrp = document.getElementById(
-			'input_crs_dscrp',
-		) as HTMLInputElement;
-
-		courseModal.classList.replace('opacity-100', 'opacity-0');
-		courseModal.classList.replace('z-30', 'z-0');
-		courseBack.classList.replace('opacity-60', 'opacity-0');
-		courseBack.classList.replace('z-20', 'z-0');
-		courseBack.classList.remove('blur-sm');
-
-		//
-		inputName.value = '';
-		inputDscrp.value = '';
-	};
-
 	const addCourse = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -42,6 +18,11 @@ export const CourseModal: React.FC = () => {
 		const inputDscrp = document.getElementById(
 			'input_crs_dscrp',
 		) as HTMLInputElement;
+
+		if (!(await spaceCheck([inputName.value, inputDscrp.value]))) {
+			alert('입력한 내용을 확인해주세요. 빈 값은 허용되지 않습니다.');
+			return;
+		}
 
 		await axios({
 			method: 'POST',
@@ -57,8 +38,8 @@ export const CourseModal: React.FC = () => {
 		})
 			.then((res) => {
 				if (res.data.code == 'SUCCESS') {
-					alert('코스등록 성공');
-					courseModalClose();
+					alert(res.data.msg);
+					modalClose('course');
 					window.location.reload();
 				} else {
 					alert(res.data.msg);
@@ -91,10 +72,14 @@ export const CourseModal: React.FC = () => {
 					id="icon_x"
 					size={28}
 					className="absolute top-6 right-6 cursor-pointer"
-					onClick={courseModalClose}
+					onClick={(e) => {
+						modalClose('course');
+					}}
 				></VscChromeClose>
 				<div className="w-[640px] flex flex-col">
-					<p className="font-extrabold text-xl text-center">코스 추가</p>
+					<p className="font-extrabold text-xl text-center">
+						코스 추가
+					</p>
 					<div className="mt-6">
 						<p className="font-bold">코스명</p>
 						<TextInput
@@ -111,7 +96,12 @@ export const CourseModal: React.FC = () => {
 							className="mt-2 w-full h-[200px] border border-gray-300 rounded-md px-2 py-1 text-lg resize-none"
 						></textarea>
 					</div>
-					<SubmitButton id={'addcrs_sub_btn'} class={'bg-crimson text-white hover:bg-[#4a0000] mt-2'}>Add</SubmitButton>
+					<SubmitButton
+						id={'addcrs_sub_btn'}
+						class={'bg-crimson text-white hover:bg-[#4a0000] mt-2'}
+					>
+						Add
+					</SubmitButton>
 				</div>
 			</FormLayout>
 		</>

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { VscChromeClose } from 'react-icons/vsc';
 import { MemberListItem } from './ListItem';
+import { modalClose } from '../util/modal';
 
 interface memberModalProps {
 	courseId: number;
-    self: boolean;
+	self: boolean;
 }
 
 export const MemberModal: React.FC<memberModalProps> = (
@@ -13,20 +14,11 @@ export const MemberModal: React.FC<memberModalProps> = (
 ) => {
 	const [mdata, setMdata] = useState(new Array<any>());
 
-	const memberModalClose = async () => {
-		const memberForm = document.getElementById(
-			'member_modal',
-		) as HTMLDivElement;
-		const memberBack = document.getElementById(
-			'member_back',
-		) as HTMLDivElement;
-
-		memberForm.classList.replace('opacity-100', 'opacity-0');
-		memberForm.classList.replace('z-30', 'z-0');
-		memberBack.classList.replace('opacity-60', 'opacity-0');
-		memberBack.classList.replace('z-20', 'z-0');
-		memberBack.classList.remove('blur-sm');
-	};
+	//banApplication 구현에서 벽을 느껴버림.
+	//처음부터 설계를 잘 하고 들어갔어야 했는데,
+	//망해버린 집이된 것 같네.
+	//설계를 어떻게 고쳐야할 지 감이 안옴 ㄹㅇ;
+	//listItem 내부에 있는 ban을 checkmodal에 어떻게 집어넣어야하지
 
 	useEffect(() => {
 		if (!props.courseId || !props.self) return;
@@ -68,15 +60,22 @@ export const MemberModal: React.FC<memberModalProps> = (
 					id="icon_x"
 					size={28}
 					className="absolute top-3 right-3 cursor-pointer"
-					onClick={memberModalClose}
+					onClick={(e) => {
+						modalClose('member');
+					}}
 				></VscChromeClose>
 				<div className="w-[322px] flex flex-col">
-                    <p className="font-bold text-lg text-center">수강 인원</p>
+					<p className="font-bold text-lg text-center">수강 인원</p>
 					<div className="w-full flex mt-2">
-						<div className="flex-1 border-y border-l border-black text-center">아이디</div>
-						<div className="flex-1 border-y border-l border-black text-center">학번</div>
-						<div className="flex-1 border-y border-x border-black text-center">이름</div>
-                        <div className="w-[30px]"></div>
+						<div className="flex-1 border-y border-l border-black text-center">
+							아이디
+						</div>
+						<div className="flex-1 border-y border-l border-black text-center">
+							학번
+						</div>
+						<div className="flex-1 border-y border-x border-black text-center">
+							이름
+						</div>
 					</div>
 					<ul className="w-full">
 						{mdata.map((dt, idx) => (

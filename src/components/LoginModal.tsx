@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import { TextInput } from './Input';
 import { SubmitButton, ClickButton } from './Button';
 import { FormLayout } from '../layouts/FormLayout';
+import { modalOpen } from '../util/modal';
 
 export const LoginModal: React.FC = () => {
-	const joinModalOpen = async () => {
-		const joinModal = document.getElementById('join_modal') as HTMLDivElement;
-		const joinBack = document.getElementById('join_back') as HTMLDivElement;
-
-		joinModal.classList.replace('opacity-0', 'opacity-100');
-		joinModal.classList.replace('z-0', 'z-30');
-		joinBack.classList.replace('opacity-0', 'opacity-60');
-		joinBack.classList.replace('z-0', 'z-20');
-		joinBack.classList.add('blur-sm');
-	};
-
 	const login = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const inputId = document.getElementById('input_id') as HTMLInputElement;
@@ -78,7 +67,9 @@ export const LoginModal: React.FC = () => {
 				<ClickButton
 					id={'signup_clk_btn'}
 					class={'w-full border text-crimson border-crimson hover:bg-gray-100 mt-2'}
-					onClick={joinModalOpen}
+					onClick={(e) => {
+						modalOpen('join');
+					}}
 				>
 					SIGN UP
 				</ClickButton>

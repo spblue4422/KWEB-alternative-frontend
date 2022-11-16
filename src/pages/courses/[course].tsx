@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
 import { VscTrash } from 'react-icons/vsc';
 import { FaPlus } from 'react-icons/fa';
 import { RiGroupLine } from 'react-icons/ri';
@@ -10,10 +11,13 @@ import { Layout } from '../../layouts/Layout';
 import { LectureModal } from '../../components/LectureModal';
 import { ClickButton } from '../../components/Button';
 import { MemberModal } from '../../components/MemberModal';
+import { CheckModal } from '../../components/CheckModal';
+import { modalOpen, modalClose } from '../../util/modal';
 
 const Course: NextPage = () => {
 	const router = useRouter();
 	const { course } = router.query;
+
 	const [obj, setObj] = useState({ self: 0, apc: 0 });
 	const [cdata, setCdata] = useState({
 		id: 0,
@@ -27,41 +31,13 @@ const Course: NextPage = () => {
 		createdDate: '',
 	});
 	const [ldata, setLdata] = useState(new Array<any>());
+	const [order, setOrder] = useState(0);
 
-	const lectureModalOpen = async () => {
-		const lectureModal = document.getElementById(
-			'lecture_modal',
-		) as HTMLDivElement;
-		const lectureBack = document.getElementById(
-			'lecture_back',
-		) as HTMLDivElement;
-
-		lectureModal.classList.replace('opacity-0', 'opacity-100');
-		lectureModal.classList.replace('z-0', 'z-30');
-		lectureBack.classList.replace('opacity-0', 'opacity-60');
-		lectureBack.classList.replace('z-0', 'z-20');
-		lectureBack.classList.add('blur-sm');
-	};
-
-	const memberModalOpen = async () => {
-		const memberModal = document.getElementById(
-			'member_modal',
-		) as HTMLDivElement;
-		const memberBack = document.getElementById(
-			'member_back',
-		) as HTMLDivElement;
-
-		memberModal.classList.replace('opacity-0', 'opacity-100');
-		memberModal.classList.replace('z-0', 'z-30');
-		memberBack.classList.replace('opacity-0', 'opacity-60');
-		memberBack.classList.replace('z-0', 'z-20');
-		memberBack.classList.add('blur-sm');
-	};
-
-    const deleteCourse = async (e: MouseEvent<HTMLButtonElement>) => {
+	const deleteCourse = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		modalClose('check');
 
-		axios({
+		await axios({
 			method: 'DELETE',
 			url: `http://localhost:3000/courses/remove/${course}`,
 			withCredentials: true,
@@ -86,13 +62,14 @@ const Course: NextPage = () => {
 
 	const adjustApplication = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-        // undefined 체크용
+		modalClose('check');
+
 		if (!course) {
 			alert('알 수 없는 오류입니다. 다시 시도해주세요.');
 			return;
 		}
 		if (obj.apc) {
-			axios({
+			await axios({
 				method: 'DELETE',
 				url: `http://localhost:3000/applications/delete/${course}`,
 				withCredentials: true,
@@ -114,7 +91,7 @@ const Course: NextPage = () => {
 					}
 				});
 		} else {
-			axios({
+			await axios({
 				method: 'POST',
 				url: `http://localhost:3000/applications/add`,
 				data: {
@@ -146,6 +123,7 @@ const Course: NextPage = () => {
 
 	useEffect(() => {
 		if (!router.isReady) return;
+		//드러운 axios 코드 정리 필요할듯
 		axios({
 			method: 'GET',
 			url: `http://localhost:3000/courses/${course}`,
@@ -158,26 +136,29 @@ const Course: NextPage = () => {
 						self: res.data.self,
 						apc: res.data.apc,
 					});
-				} else {
-					alert(res.data.msg);
-				}
-			})
-			.catch((error) => {
-				if (error.response.status == 401) {
-					alert('로그인이 필요한 화면입니다.');
-					window.location.href = 'http://localhost:3210/login';
-				} else {
-					alert('알 수 없는 오류입니다. 다시 시도해주세요.');
-				}
-			});
-		axios({
-			method: 'GET',
-			url: `http://localhost:3000/courses/lectures/list?cid=${course}`,
-			withCredentials: true,
-		})
-			.then((res) => {
-				if (res.data.code == 'SUCCESS') {
-					setLdata(res.data.data);
+					axios({
+						method: 'GET',
+						url: `http://localhost:3000/courses/lectures/list?cid=${course}`,
+						withCredentials: true,
+					})
+						.then((res) => {
+							if (res.data.code == 'SUCCESS') {
+								setLdata(res.data.data);
+							} else {
+								alert(res.data.msg);
+							}
+						})
+						.catch((error) => {
+							if (error.response.status == 401) {
+								alert('로그인이 필요한 화면입니다.');
+								window.location.href =
+									'http://localhost:3210/login';
+							} else {
+								alert(
+									'알 수 없는 오류입니다. 다시 시도해주세요.',
+								);
+							}
+						});
 				} else {
 					alert(res.data.msg);
 				}
@@ -192,6 +173,39 @@ const Course: NextPage = () => {
 			});
 	}, [course]);
 
+	const dt = [
+		{
+			text: (
+				<>
+					코스를
+					<br />
+					삭제하시겠습니까?
+				</>
+			),
+			func: deleteCourse,
+		},
+		{
+			text: (
+				<>
+					수강을
+					<br />
+					취소하시겠습니까?
+				</>
+			),
+			func: adjustApplication,
+		},
+		{
+			text: (
+				<>
+					수강을
+					<br />
+					신청하시겠습니까?
+				</>
+			),
+			func: adjustApplication,
+		},
+	];
+
 	return (
 		<>
 			<LectureModal
@@ -202,6 +216,9 @@ const Course: NextPage = () => {
 				courseId={cdata.id}
 				self={obj.self ? true : false}
 			></MemberModal>
+			<CheckModal confirmFunc={dt[order].func}>
+				{dt[order].text}
+			</CheckModal>
 			<Layout>
 				<div className="z-10">
 					<div className="w-full flex justify-between">
@@ -219,7 +236,9 @@ const Course: NextPage = () => {
 									class={
 										'w-12 mr-2 border flex justify-center items-center text-crimson border-crimson hover:bg-gray-100'
 									}
-									onClick={memberModalOpen}
+									onClick={(e) => {
+										modalOpen('member');
+									}}
 								>
 									<RiGroupLine size={24}></RiGroupLine>
 								</ClickButton>
@@ -228,7 +247,10 @@ const Course: NextPage = () => {
 									class={
 										'w-12 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000]'
 									}
-									onClick={deleteCourse}
+									onClick={(e) => {
+										setOrder(0);
+										modalOpen('check');
+									}}
 								>
 									<VscTrash size={24}></VscTrash>
 								</ClickButton>
@@ -239,7 +261,10 @@ const Course: NextPage = () => {
 								class={
 									'w-12 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000]'
 								}
-								onClick={adjustApplication}
+								onClick={(e) => {
+									setOrder(1);
+									modalOpen('check');
+								}}
 							>
 								취소
 							</ClickButton>
@@ -249,7 +274,10 @@ const Course: NextPage = () => {
 								class={
 									'w-12 mr-2 border flex justify-center items-center text-crimson border-crimson hover:bg-gray-100'
 								}
-								onClick={adjustApplication}
+								onClick={(e) => {
+									setOrder(2);
+									modalOpen('check');
+								}}
 							>
 								신청
 							</ClickButton>
@@ -261,7 +289,7 @@ const Course: NextPage = () => {
 					</div>
 					<div className="w-full mt-10">
 						<p className="text-lg font-bold">강의 목록</p>
-						<ul className="w-full max-h-[120px] overflow-hidden hover:overflow-y-scroll  mt-2">
+						<ul className="w-full max-h-[300px] overflow-hidden hover:overflow-y-scroll mt-2">
 							{ldata.map((dt, idx) => (
 								<LectureListItem
 									key={`LLI_${dt.id}`}
@@ -277,7 +305,9 @@ const Course: NextPage = () => {
 								class={
 									'w-12 float-right mt-2 bg-crimson text-white flex justify-center items-center hover:bg-[#4a0000] drop-shadow-md'
 								}
-								onClick={lectureModalOpen}
+								onClick={(e) => {
+									modalOpen('lecture');
+								}}
 							>
 								<FaPlus size={24}></FaPlus>
 							</ClickButton>

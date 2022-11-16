@@ -1,64 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { VscChromeClose } from 'react-icons/vsc';
 import axios from 'axios';
 import { FormLayout } from '../layouts/FormLayout';
 import { SubmitButton } from './Button';
 import { RadioInput, TextInput } from './Input';
+import { modalClose } from '../util/modal';
+import { spaceCheck } from '../util/textCheck';
 
 const JoinModal: React.FC = () => {
 	const [status, setStatus] = useState('student');
 
-	const isChecked = () => {
-		if (status == 'student') {
-			return true;
-		} else {
-			return false;
-		}
-	};
-
-	const joinModalClose = async () => {
-		const joinModal = document.getElementById('join_modal') as HTMLDivElement;
-		const joinBack = document.getElementById('join_back') as HTMLDivElement;
-		const inputId = document.getElementById(
-			'input_new_id',
-		) as HTMLInputElement;
-		const inputPw = document.getElementById(
-			'input_new_pw',
-		) as HTMLInputElement;
-		const inputName = document.getElementById(
-			'input_new_nm',
-		) as HTMLInputElement;
-		const inputUnqNum = document.getElementById(
-			'input_new_un',
-		) as HTMLInputElement;
-
-		joinModal.classList.replace('opacity-100', 'opacity-0');
-		joinModal.classList.replace('z-30', 'z-0');
-		joinBack.classList.replace('opacity-60', 'opacity-0');
-		joinBack.classList.replace('z-20', 'z-0');
-		joinBack.classList.remove('blur-sm');
-
-		inputId.value = '';
-		inputPw.value = '';
-		inputName.value = '';
-		inputUnqNum.value = '';
-		setStatus('student');
-	};
-
 	const join = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const inputId = document.getElementById(
-			'input_new_id',
+			'input_join_id',
 		) as HTMLInputElement;
 		const inputPw = document.getElementById(
-			'input_new_pw',
+			'input_join_pw',
 		) as HTMLInputElement;
 		const inputName = document.getElementById(
-			'input_new_nm',
+			'input_join_nm',
 		) as HTMLInputElement;
 		const inputUnqNum = document.getElementById(
-			'input_new_un',
+			'input_join_un',
 		) as HTMLInputElement;
+
+		if (
+			//빈 값이 있다면
+			!(await spaceCheck([
+				inputId.value,
+				inputPw.value,
+				inputName.value,
+				inputUnqNum.value,
+			]))
+		) {
+			alert('입력한 내용을 확인해주세요. 빈 값은 허용되지 않습니다.');
+			return;
+		}
+		// 아이디, 비밀번호, 학번 형식 걸거면 여기 걸면 될듯
 
 		await axios({
 			method: 'POST',
@@ -77,8 +56,8 @@ const JoinModal: React.FC = () => {
 		})
 			.then((res) => {
 				if (res.data.code == 'SUCCESS') {
-					alert('회원가입 성공');
-					joinModalClose();
+					alert(res.data.msg);
+					modalClose('join');
 				} else {
 					alert(res.data.msg);
 				}
@@ -87,6 +66,7 @@ const JoinModal: React.FC = () => {
 				alert('알 수 없는 오류입니다. 다시 시도해주세요.');
 			});
 	};
+
 	return (
 		<>
 			<div
@@ -104,7 +84,9 @@ const JoinModal: React.FC = () => {
 					id="icon_x"
 					size={28}
 					className="absolute top-6 right-6 cursor-pointer"
-					onClick={joinModalClose}
+					onClick={(e) => {
+						modalClose('join');
+					}}
 				></VscChromeClose>
 				<div className="w-[320px] flex flex-col">
 					<p className="text-center text-crimson text-2xl mb-6">
@@ -135,25 +117,25 @@ const JoinModal: React.FC = () => {
 						</RadioInput>
 					</div>
 					<TextInput
-						id={'input_new_id'}
+						id={'input_join_id'}
 						type={'text'}
 						hold={'ID'}
 						class={'w-full mt-3'}
 					></TextInput>
 					<TextInput
-						id={'input_new_pw'}
+						id={'input_join_pw'}
 						type={'password'}
 						hold={'Password'}
 						class={'w-full mt-3'}
 					></TextInput>
 					<TextInput
-						id={'input_new_nm'}
+						id={'input_join_nm'}
 						type={'text'}
 						hold={'이름'}
 						class={'w-full mt-3'}
 					></TextInput>
 					<TextInput
-						id={'input_new_un'}
+						id={'input_join_un'}
 						type={'text'}
 						hold={'학번/교번'}
 						class={'w-full mt-3'}

@@ -13,10 +13,12 @@ const Search: NextPage = () => {
 		e: React.FormEvent<HTMLFormElement>,
 	) => {
 		e.preventDefault();
+
 		const inputSrch = document.getElementById(
 			'input_srch',
 		) as HTMLInputElement;
-		axios({
+
+		await axios({
 			method: 'POST',
 			url: 'http://localhost:3000/courses/list/search',
 			data: {
