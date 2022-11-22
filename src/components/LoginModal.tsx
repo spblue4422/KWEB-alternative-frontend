@@ -29,7 +29,7 @@ export const LoginModal: React.FC = () => {
 			})
 			.catch((error) => {
 				if (error.response.status == 401) {
-					alert('잘못된 아이디/비밀번호/상태 정보입니다.');
+					alert('잘못된 아이디 혹은 비밀번호 입니다.');
 				} else {
 					alert('알 수 없는 오류입니다. 다시 시도해주세요.');
 				}
@@ -60,13 +60,17 @@ export const LoginModal: React.FC = () => {
 				></TextInput>
 				<SubmitButton
 					id={'login_sub_btn'}
-					class={'w-full bg-crimson text-white hover:bg-[#4a0000] mt-6'}
+					class={
+						'w-full bg-crimson text-white hover:bg-[#4a0000] mt-6'
+					}
 				>
 					LOGIN
 				</SubmitButton>
 				<ClickButton
 					id={'signup_clk_btn'}
-					class={'w-full border text-crimson border-crimson hover:bg-gray-100 mt-2'}
+					class={
+						'w-full border text-crimson border-crimson hover:bg-gray-100 mt-2'
+					}
 					onClick={(e) => {
 						modalOpen('join');
 					}}

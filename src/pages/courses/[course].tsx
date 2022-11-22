@@ -71,7 +71,7 @@ const Course: NextPage = () => {
 		if (obj.apc) {
 			await axios({
 				method: 'DELETE',
-				url: `http://localhost:3000/applications/delete/${course}`,
+				url: `http://localhost:3000/applications/remove/${course}`,
 				withCredentials: true,
 			})
 				.then((res) => {
