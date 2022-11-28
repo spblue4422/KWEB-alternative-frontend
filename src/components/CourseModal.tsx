@@ -26,7 +26,7 @@ export const CourseModal: React.FC = () => {
 
 		await axios({
 			method: 'POST',
-			url: 'http://localhost:3210/courses/add',
+			url: 'http://localhost:3000/courses/add',
 			data: {
 				name: inputName.value,
 				description: inputDscrp.value,

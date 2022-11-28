@@ -289,7 +289,7 @@ const Course: NextPage = () => {
 					</div>
 					<div className="w-full mt-10">
 						<p className="text-lg font-bold">강의 목록</p>
-						<ul className="w-full max-h-[300px] overflow-hidden hover:overflow-y-scroll mt-2">
+						<ul className="w-full max-h-[280px] overflow-hidden hover:overflow-y-scroll mt-2">
 							{ldata.map((dt, idx) => (
 								<LectureListItem
 									key={`LLI_${dt.id}`}

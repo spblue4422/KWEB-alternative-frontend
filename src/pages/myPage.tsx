@@ -89,7 +89,7 @@ const MyPage: NextPage = () => {
 								? '신청 코스 목록'
 								: '개설 코스 목록'}
 						</p>
-						<ul className="w-full max-h-[120px] overflow-hidden hover:overflow-y-scroll mt-2">
+						<ul className="w-full max-h-[140px] overflow-hidden hover:overflow-y-scroll mt-2">
 							{cdata.map((dt, idx) => (
 								<CourseListItem
 									key={`CLI_${idx}`}
